@@ -9,7 +9,7 @@ import {
   ResponsiveContainer, 
   Cell
 } from 'recharts';
-import { AlertTriangle, Clock, Hammer, ShieldAlert } from 'lucide-react';
+import { Clock, Hammer, ShieldAlert } from 'lucide-react';
 
 const BREAKDOWN_DATA = [
   { reason: 'Mechanical', hours: 42, count: 12 },

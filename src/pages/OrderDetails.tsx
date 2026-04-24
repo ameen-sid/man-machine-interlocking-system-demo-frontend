@@ -3,16 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSimulation } from '../context/SimulationContext';
 import { 
   ArrowLeft, 
-  Target, 
   TrendingUp, 
   Clock, 
-  CheckCircle2,
   Box
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { 
-  LineChart, 
-  Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 

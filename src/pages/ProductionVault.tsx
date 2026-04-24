@@ -5,7 +5,6 @@ import {
   Archive, 
   FileText, 
   Download,
-  Calendar,
   Lock,
   Search
 } from 'lucide-react';

@@ -8,7 +8,7 @@ import {
   ResponsiveContainer, 
   Legend 
 } from 'recharts';
-import { FileText, Download, Filter, FileBarChart } from 'lucide-react';
+import { Download, Filter, FileBarChart } from 'lucide-react';
 
 const SHIFT_DATA = [
   { shift: 'Shift A (Morning)', output: 2450, target: 2500, quality: 98.2 },

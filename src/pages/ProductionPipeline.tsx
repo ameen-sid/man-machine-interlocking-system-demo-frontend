@@ -5,8 +5,7 @@ import {
   Play, 
   Clock, 
   Settings2,
-  Lock,
-  ArrowRight
+  Lock
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 

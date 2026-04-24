@@ -73,7 +73,7 @@ const OEERing = ({ label, value, color }: { label: string, value: number, color:
 };
 
 export const AnalyticsDashboard: React.FC = () => {
-  const { machines } = useSimulation();
+  useSimulation();
   
   return (
     <div className="space-y-8">

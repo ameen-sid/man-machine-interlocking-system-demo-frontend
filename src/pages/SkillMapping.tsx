@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSimulation } from '../context/SimulationContext';
-import { UserCheck, Award, Star, BookOpen } from 'lucide-react';
+import { Award, Star, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const SkillMapping: React.FC = () => {

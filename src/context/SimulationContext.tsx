@@ -80,7 +80,7 @@ export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [machines, setMachines] = useState<Machine[]>(INITIAL_MACHINES);
   const [alerts, setAlerts] = useState<SystemAlert[]>(INITIAL_ALERTS);
   const [orders, setOrders] = useState<ProductionOrder[]>(INITIAL_ORDERS);
-  const [currentUser, setCurrentUser] = useState<Operator | null>(null);
+  const [currentUser] = useState<Operator | null>(null);
 
   const addAlert = useCallback((message: string, type: SystemAlert['type']) => {
     const newAlert: SystemAlert = {

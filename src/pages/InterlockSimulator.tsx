@@ -6,7 +6,6 @@ import {
   Unlock, 
   AlertCircle, 
   CheckCircle2, 
-  ChevronRight,
   UserCheck,
   Zap
 } from 'lucide-react';

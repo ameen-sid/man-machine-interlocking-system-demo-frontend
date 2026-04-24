@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSimulation } from '../context/SimulationContext';
 import { 
-  Users, 
   Clock, 
   MapPin, 
   Search, 
