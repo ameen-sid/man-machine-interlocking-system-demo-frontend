@@ -172,10 +172,10 @@ import { api } from "../utils/api";
 export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [machines, setMachines] = useState<Machine[]>(INITIAL_MACHINES);
-	const [operators, setOperators] = useState<Operator[]>(INITIAL_OPERATORS);
+	const [machines, setMachines] = useState<Machine[]>([]);
+	const [operators, setOperators] = useState<Operator[]>([]);
 	const [alerts, setAlerts] = useState<SystemAlert[]>(INITIAL_ALERTS);
-	const [orders, setOrders] = useState<ProductionOrder[]>(INITIAL_ORDERS);
+	const [orders, setOrders] = useState<ProductionOrder[]>([]);
 	const [currentUser] = useState<Operator | null>(null);
 
 	useEffect(() => {
@@ -225,9 +225,11 @@ export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({
 					);
 				}
 			} catch (error) {
-				console.warn(
-					"Backend not available or mapping error, using initial dummy data",
-				);
+				console.error("Backend unavailable:", error);
+				// Do not fallback to dummy data for core modules
+				setOperators([]);
+				setMachines([]);
+				setOrders([]);
 			}
 		};
 		fetchData();
@@ -252,7 +254,7 @@ export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({
 	};
 
 	const login = (operatorId: string, machineId: string) => {
-		const operator = INITIAL_OPERATORS.find((o) => o.id === operatorId);
+		const operator = operators.find((o) => o.id === operatorId);
 		const machine = machines.find((m) => m.id === machineId);
 
 		if (!operator || !machine)
