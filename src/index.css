@@ -1,42 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-industrial-black: #000000;
-  --color-industrial-dark: #0A0A0A;
-  --color-industrial-gray: #1A1A1A;
-  --color-industrial-accent: #FCA311;
-  --color-status-running: #22C55E;
-  --color-status-idle: #FACC15;
-  --color-status-warning: #F97316;
-  --color-status-error: #EF4444;
-  
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+	--color-industrial-black: #000000;
+	--color-industrial-dark: #0a0a0a;
+	--color-industrial-gray: #1a1a1a;
+	--color-industrial-accent: #fca311;
+	--color-status-running: #22c55e;
+	--color-status-idle: #facc15;
+	--color-status-warning: #f97316;
+	--color-status-error: #ef4444;
+
+	--font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
 @layer base {
-  :root {
-    color-scheme: dark;
-  }
-  
-  body {
-    @apply bg-industrial-black text-gray-100 antialiased font-sans min-h-screen selection:bg-industrial-accent selection:text-black;
-  }
+	:root {
+		color-scheme: dark;
+	}
+
+	body {
+		@apply bg-industrial-black text-gray-100 antialiased font-sans min-h-screen selection:bg-industrial-accent selection:text-black;
+	}
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-industrial-dark/40 backdrop-blur-xl border border-white/5 shadow-2xl;
-  }
-  
-  .glass-card-hover {
-    @apply transition-all duration-300 hover:border-white/10 hover:bg-industrial-dark/60;
-  }
+	.glass-card {
+		@apply bg-industrial-dark/40 backdrop-blur-xl border border-white/5 shadow-2xl;
+	}
 
-  .accent-glow {
-    @apply shadow-[0_0_20px_rgba(252,163,17,0.1)];
-  }
+	.glass-card-hover {
+		@apply transition-all duration-300 hover:border-white/10 hover:bg-industrial-dark/60;
+	}
 
-  .accent-glow-strong {
-    @apply shadow-[0_0_30px_rgba(252,163,17,0.2)];
-  }
+	.accent-glow {
+		@apply shadow-[0_0_20px_rgba(252,163,17,0.1)];
+	}
+
+	.accent-glow-strong {
+		@apply shadow-[0_0_30px_rgba(252,163,17,0.2)];
+	}
 }
