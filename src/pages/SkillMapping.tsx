@@ -3,8 +3,16 @@ import { useSimulation } from '../context/SimulationContext';
 import { Award, Star, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+const DUMMY_OPERATORS = [
+  { id: 'OP-01', name: 'John Doe', level: 3, certifications: ['CNC Milling', 'Safety-L3', 'Maintenance'] },
+  { id: 'OP-02', name: 'Jane Smith', level: 2, certifications: ['Quality Control', 'Assembly-L2'] },
+  { id: 'OP-03', name: 'Mike Ross', level: 1, certifications: ['Safety-L1', 'Manual Lathe'] },
+  { id: 'OP-04', name: 'Sarah Connor', level: 3, certifications: ['Robotics Specialist', 'Cybernetics', 'PLC Programming'] },
+  { id: 'OP-05', name: 'David Chen', level: 2, certifications: ['Electronics', 'PCB Soldering', 'ESD Safety'] }
+];
+
 export const SkillMapping: React.FC = () => {
-  const { operators } = useSimulation();
+  const operators = DUMMY_OPERATORS;
 
   return (
     <div className="space-y-8">

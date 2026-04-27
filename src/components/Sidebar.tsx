@@ -23,17 +23,45 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const navItems = [
-  { icon: LayoutDashboard, label: 'Factory Monitor', path: '/monitor' },
-  { icon: ShieldCheck, label: 'Interlock Sim', path: '/' },
-  { icon: ClipboardList, label: 'Production Plan', path: '/prod-plan' },
-  { icon: UserCheck, label: 'Skill Mapping', path: '/skills' },
-  { icon: Users, label: 'Attendance', path: '/attendance' },
-  { icon: Activity, label: 'OEE Analytics', path: '/analytics' },
-  { icon: BarChart3, label: 'Breakdown Analysis', path: '/breakdown' },
-  { icon: AlertTriangle, label: 'Maintenance Log', path: '/maintenance' },
-  { icon: LineChart, label: 'Future Planning', path: '/future' },
-  { icon: FileText, label: 'Shift Report', path: '/shift-report' },
+const navCategories = [
+  {
+    label: 'Operations',
+    items: [
+      { icon: LayoutDashboard, label: 'Factory Monitor', path: '/monitor' },
+      { icon: ShieldCheck, label: 'Interlock Sim', path: '/' },
+      { icon: ClipboardList, label: 'Production Plan', path: '/prod-plan' },
+    ]
+  },
+  {
+    label: 'Workforce',
+    items: [
+      { icon: UserCheck, label: 'Skill Mapping', path: '/skills' },
+      { icon: Users, label: 'Operator Management', path: '/operators' },
+      { icon: Users, label: 'Attendance', path: '/attendance' },
+    ]
+  },
+  {
+    label: 'Analytics',
+    items: [
+      { icon: Activity, label: 'OEE Analytics', path: '/analytics' },
+      { icon: BarChart3, label: 'Breakdown Analysis', path: '/breakdown' },
+    ]
+  },
+  {
+    label: 'Reports & Planning',
+    items: [
+      { icon: AlertTriangle, label: 'Maintenance Log', path: '/maintenance' },
+      { icon: LineChart, label: 'Future Planning', path: '/future' },
+      { icon: FileText, label: 'Shift Report', path: '/shift-report' },
+    ]
+  },
+  {
+    label: 'System',
+    items: [
+      { icon: Factory, label: 'Station Management', path: '/stations' },
+      { icon: ShieldCheck, label: 'User Management', path: '/users' },
+    ]
+  }
 ];
 
 export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ isOpen, onClose }) => {
@@ -77,23 +105,32 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ 
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => cn(
-              "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
-              isActive 
-                ? "bg-industrial-accent text-black font-semibold shadow-[0_0_20px_rgba(252,163,17,0.2)]" 
-                : "text-gray-400 hover:text-white hover:bg-white/5"
-            )}
-          >
-            <item.icon className={cn("w-5 h-5", "group-hover:scale-110 transition-transform")} />
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
+        <nav className="flex-1 px-4 py-6 space-y-8 overflow-y-auto custom-scrollbar">
+          {navCategories.map((category) => (
+            <div key={category.label} className="space-y-2">
+              <h3 className="px-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2">
+                {category.label}
+              </h3>
+              <div className="space-y-1">
+                {category.items.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) => cn(
+                      "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
+                      isActive 
+                        ? "bg-industrial-accent text-black font-semibold shadow-[0_0_20px_rgba(252,163,17,0.2)]" 
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    )}
+                  >
+                    <item.icon className={cn("w-5 h-5", "group-hover:scale-110 transition-transform")} />
+                    <span className="text-sm">{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
 
       <div className="p-4 border-t border-white/5 mt-auto">
         <div className="bg-industrial-dark/60 p-4 rounded-xl border border-white/5">

@@ -16,6 +16,10 @@ import { ProductionPipeline } from './pages/ProductionPipeline';
 import { ProductionVault } from './pages/ProductionVault';
 import { ShiftReport } from './pages/ShiftReport';
 import { FuturePlanning } from './pages/FuturePlanning';
+import { OperatorManagement } from './pages/OperatorManagement';
+import { UserManagement } from './pages/UserManagement';
+import { StationManagement } from './pages/StationManagement';
+import { OperatorLogs } from './pages/OperatorLogs';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -48,6 +52,10 @@ function App() {
               <Route path="prod-plan/vault" element={<ProductionVault />} />
               <Route path="shift-report" element={<ShiftReport />} />
               <Route path="future" element={<FuturePlanning />} />
+              <Route path="operators" element={<OperatorManagement />} />
+              <Route path="operator-logs/:id" element={<OperatorLogs />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="stations" element={<StationManagement />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

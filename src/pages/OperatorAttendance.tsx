@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSimulation } from '../context/SimulationContext';
 import { 
   Clock, 
@@ -10,8 +11,30 @@ import {
   UserPlus
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  AreaChart,
+  Area
+} from 'recharts';
+
+const ATTENDANCE_TREND = [
+  { day: 'Mon', count: 12 },
+  { day: 'Tue', count: 15 },
+  { day: 'Wed', count: 14 },
+  { day: 'Thu', count: 16 },
+  { day: 'Fri', count: 15 },
+  { day: 'Sat', count: 10 },
+  { day: 'Sun', count: 8 },
+];
 
 export const OperatorAttendance: React.FC = () => {
+  const navigate = useNavigate();
   const { operators, machines } = useSimulation();
   const [activeActions, setActiveActions] = React.useState<string | null>(null);
 
@@ -49,91 +72,87 @@ export const OperatorAttendance: React.FC = () => {
          </div>
       </div>
 
-      <div className="glass-card rounded-2xl border border-white/5 overflow-x-auto">
-         <table className="w-full text-left text-xs min-w-[700px]">
-            <thead className="bg-white/5">
-               <tr>
-                  <th className="p-4 font-black uppercase text-gray-400 tracking-widest">Operator Name</th>
-                  <th className="p-4 font-black uppercase text-gray-400 tracking-widest">Shift Status</th>
-                  <th className="p-4 font-black uppercase text-gray-400 tracking-widest">Clock-In Time</th>
-                  <th className="p-4 font-black uppercase text-gray-400 tracking-widest">Assigned Station</th>
-                  <th className="p-4 font-black uppercase text-gray-400 tracking-widest text-right">Actions</th>
-               </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-               {operators.map((op, i) => {
-                  const assignedMachine = machines.find(m => m.currentOperatorId === op.id);
-                  return (
-                     <motion.tr 
-                       key={op.id}
-                       initial={{ opacity: 0 }}
-                       animate={{ opacity: 1 }}
-                       transition={{ delay: i * 0.05 }}
-                       className="hover:bg-white/5 transition-colors group"
+      <div className="glass-card p-6 rounded-2xl border border-white/5 h-[300px]">
+        <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Attendance Trend (Past 7 Days)</h3>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={ATTENDANCE_TREND}>
+            <defs>
+              <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#fca311" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#fca311" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+            <XAxis dataKey="day" stroke="#666" fontSize={10} axisLine={false} tickLine={false} />
+            <YAxis stroke="#666" fontSize={10} axisLine={false} tickLine={false} />
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid #ffffff10', borderRadius: '8px' }}
+              itemStyle={{ color: '#fca311' }}
+            />
+            <Area type="monotone" dataKey="count" stroke="#fca311" fillOpacity={1} fill="url(#colorCount)" strokeWidth={3} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+           <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">Recent Attendance Events (System Catch)</h3>
+           <span className="text-[10px] font-mono text-industrial-accent animate-pulse">STREAMING LIVE</span>
+        </div>
+        <div className="glass-card rounded-2xl border border-white/5 overflow-hidden">
+          <div className="divide-y divide-white/5">
+            {[...Array(8)].map((_, i) => {
+              const op = operators[i % (operators.length || 1)];
+              const mc = machines[i % (machines.length || 1)];
+              return (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="p-4 flex items-center justify-between group hover:bg-white/5 transition-all"
+                >
+                  <div className="flex items-center gap-6">
+                     <div className="flex items-center gap-3 w-48">
+                        <div className="w-8 h-8 bg-industrial-accent/10 rounded-lg flex items-center justify-center">
+                           <Clock className="w-4 h-4 text-industrial-accent" />
+                        </div>
+                        <div>
+                           <p className="text-xs font-bold text-white group-hover:text-industrial-accent transition-colors">
+                              {op?.name || 'System Operator'}
+                           </p>
+                           <p className="text-[9px] font-mono text-gray-500 uppercase">{op?.id || 'HID-92X'}</p>
+                        </div>
+                     </div>
+
+                     <div className="hidden md:flex items-center gap-2 px-4 border-l border-white/5">
+                        <MapPin className="w-3 h-3 text-gray-600" />
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{mc?.name || 'Gate-01'}</span>
+                     </div>
+
+                     <div className="hidden lg:block px-4 border-l border-white/5">
+                        <span className="text-[9px] font-black uppercase text-green-500/70 py-1 px-2 bg-green-500/5 rounded-full border border-green-500/10">
+                           Authentication Success
+                        </span>
+                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-6">
+                     <span className="text-[10px] font-mono text-gray-400">11:24:0{i} AM</span>
+                     <button 
+                       onClick={() => navigate(`/operator-logs/${op?.id || 'op-01'}`)}
+                       className="p-2 bg-white/5 text-gray-400 rounded-lg hover:bg-industrial-accent hover:text-black transition-all"
                      >
-                        <td className="p-4">
-                           <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold group-hover:bg-industrial-accent group-hover:text-black transition-colors">
-                                 {op.name.charAt(0)}
-                              </div>
-                              <span className="font-bold">{op.name}</span>
-                           </div>
-                        </td>
-                        <td className="p-4">
-                           <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[9px] font-black uppercase border border-green-500/20">
-                              Logged-In
-                           </span>
-                        </td>
-                        <td className="p-4">
-                           <div className="flex items-center gap-2 text-gray-400 font-mono">
-                              <Clock className="w-3 h-3 text-industrial-accent" />
-                              08:14:22
-                           </div>
-                        </td>
-                        <td className="p-4">
-                           <div className="flex items-center gap-2">
-                              <MapPin className="w-3 h-3 text-industrial-accent" />
-                              <span className="font-bold">{assignedMachine ? assignedMachine.name : 'FLOATING'}</span>
-                           </div>
-                        </td>
-                        <td className="p-4 text-right relative">
-                           <button 
-                             onClick={() => setActiveActions(activeActions === op.id ? null : op.id)}
-                             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                           >
-                              <MoreHorizontal className="w-4 h-4 text-gray-600 group-hover:text-white" />
-                           </button>
+                        <ArrowRightLeft className="w-4 h-4" />
+                     </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-                           {activeActions === op.id && (
-                             <>
-                               <div className="fixed inset-0 z-40" onClick={() => setActiveActions(null)} />
-                               <div className="absolute right-4 top-12 w-48 bg-industrial-black border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl">
-                                  <button onClick={() => setActiveActions(null)} className="w-full text-left p-3 text-[9px] font-black uppercase tracking-widest hover:bg-industrial-accent hover:text-black flex items-center gap-3 transition-colors border-b border-white/5">
-                                     <UserPlus className="w-3 h-3" /> Assign Station
-                                  </button>
-                                  <button onClick={() => setActiveActions(null)} className="w-full text-left p-3 text-[9px] font-black uppercase tracking-widest hover:bg-industrial-accent hover:text-black flex items-center gap-3 transition-colors border-b border-white/5">
-                                     <ArrowRightLeft className="w-3 h-3" /> Shift Swap
-                                  </button>
-                                  <button onClick={() => setActiveActions(null)} className="w-full text-left p-3 text-[9px] font-black uppercase tracking-widest hover:bg-white/10 flex items-center gap-3 transition-colors">
-                                     <FileSearch className="w-3 h-3" /> Full Logs
-                                  </button>
-                               </div>
-                             </>
-                           )}
-                        </td>
-                     </motion.tr>
-                  );
-               })}
-            </tbody>
-          </table>
-      </div>
-
-      <div className="p-4 bg-industrial-accent/5 rounded-xl border border-industrial-accent/10 flex items-center justify-center gap-3">
-         <span className="w-2 h-2 bg-industrial-accent rounded-full animate-ping" />
-         <span className="text-[10px] font-black uppercase text-industrial-accent tracking-widest">
-            Live Stream: Synchronizing Hand-Held RFID Terminal Logs...
-         </span>
-      </div>
     </div>
   );
 };

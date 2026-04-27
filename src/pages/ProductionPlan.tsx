@@ -3,6 +3,16 @@ import { useSimulation } from '../context/SimulationContext';
 import { ClipboardList, Calendar, ChevronRight, Play, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 
 export const ProductionPlan: React.FC = () => {
   const { orders, addOrder } = useSimulation();
@@ -36,6 +46,22 @@ export const ProductionPlan: React.FC = () => {
            <Calendar className="w-3 h-3" />
            New Order
         </button>
+      </div>
+      <div className="glass-card p-6 rounded-2xl border border-white/5 h-[300px]">
+        <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Production Volume Overview</h3>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={orders}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+            <XAxis dataKey="id" stroke="#666" fontSize={10} axisLine={false} tickLine={false} />
+            <YAxis stroke="#666" fontSize={10} axisLine={false} tickLine={false} />
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid #ffffff10', borderRadius: '8px' }}
+              itemStyle={{ color: '#fca311' }}
+            />
+            <Bar dataKey="target" fill="#333" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="current" fill="#fca311" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       <div className="grid grid-cols-1 gap-6">

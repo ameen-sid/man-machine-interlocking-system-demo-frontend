@@ -76,11 +76,58 @@ const INITIAL_ALERTS: SystemAlert[] = [
 
 const SimulationContext = createContext<SimulationContextType | undefined>(undefined);
 
+import { api } from '../utils/api';
+
 export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [machines, setMachines] = useState<Machine[]>(INITIAL_MACHINES);
+  const [operators, setOperators] = useState<Operator[]>(INITIAL_OPERATORS);
   const [alerts, setAlerts] = useState<SystemAlert[]>(INITIAL_ALERTS);
   const [orders, setOrders] = useState<ProductionOrder[]>(INITIAL_ORDERS);
   const [currentUser] = useState<Operator | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [dbOperators, dbStations, dbOrders] = await Promise.all([
+          api.get('/operators'),
+          api.get('/stations'),
+          api.get('/production-plans')
+        ]);
+        
+        if (dbOperators) {
+          setOperators(dbOperators.map((op: any) => ({
+            ...op,
+            certifications: typeof op.certifications === 'string' ? JSON.parse(op.certifications) : op.certifications
+          })));
+        }
+
+        if (dbStations) {
+          setMachines(dbStations.map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            status: s.status,
+            partsProduced: s.parts_produced || 0,
+            requiredLevel: s.required_level || s.level || 1,
+            currentOperatorId: s.current_operator_id || null
+          })));
+        }
+
+        if (dbOrders) {
+          setOrders(dbOrders.map((o: any) => ({
+            id: o.id,
+            product: o.product_name,
+            target: o.target_quantity,
+            current: o.current_quantity,
+            deadline: o.deadline,
+            status: o.status
+          })));
+        }
+      } catch (error) {
+        console.warn('Backend not available or mapping error, using initial dummy data');
+      }
+    };
+    fetchData();
+  }, []);
 
   const addAlert = useCallback((message: string, type: SystemAlert['type']) => {
     const newAlert: SystemAlert = {
@@ -177,7 +224,7 @@ export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   return (
     <SimulationContext.Provider value={{
       machines,
-      operators: INITIAL_OPERATORS,
+       operators,
       alerts,
       orders,
       currentUser,
