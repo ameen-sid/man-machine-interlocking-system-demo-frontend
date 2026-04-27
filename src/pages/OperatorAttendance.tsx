@@ -5,15 +5,10 @@ import {
 	Clock,
 	MapPin,
 	Search,
-	MoreHorizontal,
 	ArrowRightLeft,
-	FileSearch,
-	UserPlus,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
-	BarChart,
-	Bar,
 	XAxis,
 	YAxis,
 	CartesianGrid,
@@ -36,9 +31,6 @@ const ATTENDANCE_TREND = [
 export const OperatorAttendance: React.FC = () => {
 	const navigate = useNavigate();
 	const { operators, machines } = useSimulation();
-	const [activeActions, setActiveActions] = React.useState<string | null>(
-		null,
-	);
 
 	return (
 		<div className="space-y-8">

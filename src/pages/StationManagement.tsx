@@ -3,12 +3,10 @@ import { motion } from "framer-motion";
 import {
 	Cpu,
 	Plus,
-	Power,
 	Trash2,
 	Edit2,
 	X,
 	Check,
-	AlertCircle,
 } from "lucide-react";
 import { api } from "../utils/api";
 

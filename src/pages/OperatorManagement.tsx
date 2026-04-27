@@ -8,7 +8,6 @@ import {
 	X,
 	Check,
 	Award,
-	Shield,
 } from "lucide-react";
 import { api } from "../utils/api";
 

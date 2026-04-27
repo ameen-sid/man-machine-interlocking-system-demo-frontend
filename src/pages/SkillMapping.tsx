@@ -1,5 +1,4 @@
 import React from "react";
-import { useSimulation } from "../context/SimulationContext";
 import { Award, Star, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 

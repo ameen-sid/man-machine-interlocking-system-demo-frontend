@@ -17,7 +17,6 @@ import {
 	CartesianGrid,
 	Tooltip,
 	ResponsiveContainer,
-	Cell,
 } from "recharts";
 
 export const ProductionPlan: React.FC = () => {
